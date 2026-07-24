@@ -149,5 +149,12 @@ RunService.RenderStepped:Connect(function()
     UI.MainFrame.Color = UI.OutlineColor
 end)
 
-UI:CreateMainFrame()
+-- 修改点：移除自动创建，暴露 CreateMainFrame 方法给外部调用
+function Library:CreateMainFrame(position)
+    if position then
+        UI.CurrentPosition = position
+    end
+    UI:CreateMainFrame()
+end
+
 return Library
