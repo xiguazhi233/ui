@@ -45,6 +45,9 @@ function UI:CreateMainFrame()
 end
 
 function UI:UpdateTitle()
+    -- 修复：如果 Title 还没创建，直接返回
+    if not self.Title then return end
+    
     if self.Tabs[self.ActiveTab] then
         self.Title.Text = "Library - [" .. self.Tabs[self.ActiveTab].Name .. "]"
     else
@@ -54,6 +57,9 @@ function UI:UpdateTitle()
 end
 
 function UI:UpdateTitlePosition()
+    -- 修复：如果 Title 或 MainFrame 还没创建，直接返回
+    if not self.Title or not self.MainFrame then return end
+    
     local FramePos = self.MainFrame.Position
     if self.TitlePosition == "TopLeft" then
         self.Title.Position = FramePos + Vector2.new(10, 10)
@@ -132,7 +138,7 @@ UserInputService.InputBegan:Connect(function(input, gpe)
 end)
 
 RunService.RenderStepped:Connect(function()
-    -- ===== 修复：如果 MainFrame 还没有创建，直接跳过 =====
+    -- 修复：如果 MainFrame 还没创建，直接返回
     if not UI.MainFrame then return end
     
     for tabIndex, tab in ipairs(UI.Tabs) do
