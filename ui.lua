@@ -132,6 +132,9 @@ UserInputService.InputBegan:Connect(function(input, gpe)
 end)
 
 RunService.RenderStepped:Connect(function()
+    -- ===== 修复：如果 MainFrame 还没有创建，直接跳过 =====
+    if not UI.MainFrame then return end
+    
     for tabIndex, tab in ipairs(UI.Tabs) do
         for i, button in ipairs(tab.Buttons) do
             button.Object.Position = UI.MainFrame.Position + Vector2.new(15, 50 + (i - 1) * 30)
@@ -149,7 +152,6 @@ RunService.RenderStepped:Connect(function()
     UI.MainFrame.Color = UI.OutlineColor
 end)
 
--- 修改点：移除自动创建，暴露 CreateMainFrame 方法给外部调用
 function Library:CreateMainFrame(position)
     if position then
         UI.CurrentPosition = position
